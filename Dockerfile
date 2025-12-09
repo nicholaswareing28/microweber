@@ -22,23 +22,25 @@ RUN apt update && apt install -y --no-install-recommends \
 
 RUN docker-php-ext-configure gd --with-freetype --with-webp --with-jpeg && \
     docker-php-ext-install gd && \
-    echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory-limit.ini
+    { \
+        echo 'memory_limit = 512M'; \
+        echo 'max_execution_time = 600'; \
+        echo 'max_input_time = 600'; \
+        echo 'upload_max_filesize = 100M'; \
+        echo 'post_max_size = 100M'; \
+        echo 'expose_php = Off'; \
+    } > /usr/local/etc/php/conf.d/microweber-custom.ini
 
 RUN docker-php-ext-install pdo_mysql zip dom curl mbstring intl bcmath sodium opcache
-
-
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY . /var/www/html
 
-
 WORKDIR /var/www/html
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-interaction --prefer-dist
 
-RUN chmod -R 777 /var/www/html
-RUN a2enmod rewrite
-RUN service apache2 restart
-
-
+# Fix ownership for Apache and enable modules
+RUN chown -R www-data:www-data /var/www/html && \
+    a2enmod rewrite headers expires
