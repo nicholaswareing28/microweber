@@ -20,7 +20,7 @@ RUN mkdir -p userfiles/modules userfiles/templates storage/framework/cache stora
     && chown -R docker:docker userfiles storage config bootstrap/cache \
     && chmod -R 775 userfiles storage config bootstrap/cache
 
-# Make entrypoint executable
+# Make startup script executable
 RUN chmod +x /var/www/html/docker-entrypoint-mw.sh
 
 USER docker
@@ -31,6 +31,5 @@ RUN composer install --no-interaction --prefer-dist --no-scripts
 # Generate autoload
 RUN composer dump-autoload
 
-# Use custom entrypoint for runtime initialization
-ENTRYPOINT ["/var/www/html/docker-entrypoint-mw.sh"]
-CMD ["apache2-foreground"]
+# Use thecodingmachine startup command mechanism
+ENV STARTUP_COMMAND_1="bash /var/www/html/docker-entrypoint-mw.sh"

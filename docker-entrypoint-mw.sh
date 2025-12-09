@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+# Microweber initialization script - runs before Apache starts
 
 echo "Starting Microweber initialization..."
 
@@ -47,8 +47,7 @@ else
     fi
 fi
 
-echo ".env file contents:"
-cat /var/www/html/.env
+echo ".env file created/updated"
 
 # Clear caches (allow failure)
 echo "Clearing caches..."
@@ -57,6 +56,3 @@ php /var/www/html/artisan cache:clear 2>/dev/null || true
 php /var/www/html/artisan view:clear 2>/dev/null || true
 
 echo "Microweber initialization complete."
-
-# Start Apache in foreground (thecodingmachine image default)
-exec apache2-foreground
