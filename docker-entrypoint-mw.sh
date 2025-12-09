@@ -58,5 +58,5 @@ php /var/www/html/artisan view:clear 2>/dev/null || true
 
 echo "Microweber initialization complete."
 
-# Execute the original entrypoint or apache
-exec docker-php-entrypoint "$@"
+# Start Apache in foreground (thecodingmachine image default)
+exec apache2-foreground
