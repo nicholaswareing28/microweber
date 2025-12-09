@@ -24,9 +24,9 @@ return [
      * how many proxies that client's request has
      * subsequently passed through.
      */
-    'proxies' => [
+    'proxies' => '*',
 
-    ],
+//    ],
 
     /*
      * Or, to trust all proxies that connect
