@@ -31,7 +31,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-webp --with-jpeg && \
         echo 'expose_php = Off'; \
     } > /usr/local/etc/php/conf.d/microweber-custom.ini
 
-RUN docker-php-ext-install pdo_mysql zip dom curl mbstring intl bcmath sodium opcache
+RUN docker-php-ext-install pdo_mysql zip dom curl mbstring intl bcmath sodium opcache soap exif fileinfo sockets xml xmlrpc
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
