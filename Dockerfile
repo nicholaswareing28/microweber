@@ -16,6 +16,7 @@ RUN apt update && apt install -y --no-install-recommends \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libwebp-dev \
+        libicu-dev \
         libpng-dev && \
     rm -rf /var/lib/apt/lists/*
 
