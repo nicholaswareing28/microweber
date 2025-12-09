@@ -13,6 +13,8 @@ COPY . /var/www/html
 
 WORKDIR /var/www/html
 
+RUN mkdir -p userfiles/modules userfiles/templates && chmod -R 777 userfiles
+
 RUN composer install --no-interaction --prefer-dist
 
 RUN chown -R www-data:www-data /var/www/html
