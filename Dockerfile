@@ -1,4 +1,4 @@
-FROM thecodingmachine/php:8.1-v4-apache-node16
+FROM thecodingmachine/php:8.2-v4-apache-node16
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html
 ENV PHP_INI_MEMORY_LIMIT=512M
