@@ -21,7 +21,8 @@ RUN apt update && apt install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype --with-webp --with-jpeg && \
-    docker-php-ext-install gd
+    docker-php-ext-install gd && \
+    echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory-limit.ini
 
 RUN docker-php-ext-install pdo_mysql zip dom curl mbstring intl bcmath sodium opcache
 
