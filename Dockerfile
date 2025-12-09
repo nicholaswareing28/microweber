@@ -20,20 +20,17 @@ RUN mkdir -p userfiles/modules userfiles/templates storage/framework/cache stora
     && chown -R docker:docker userfiles storage config bootstrap/cache \
     && chmod -R 775 userfiles storage config bootstrap/cache
 
+# Make entrypoint executable
+RUN chmod +x /var/www/html/docker-entrypoint-mw.sh
+
 USER docker
 
 # Install composer dependencies
 RUN composer install --no-interaction --prefer-dist --no-scripts
 
-# Generate autoload and run post-install
+# Generate autoload
 RUN composer dump-autoload
 
-# Copy .env.example to .env if .env doesn't exist and generate key
-RUN if [ ! -f .env ]; then cp .env.example .env 2>/dev/null || echo "APP_KEY=" > .env; fi
-
-# Generate application key
-RUN php artisan key:generate --force || true
-
-# Clear and cache config
-RUN php artisan config:clear || true
-RUN php artisan cache:clear || true
+# Use custom entrypoint for runtime initialization
+ENTRYPOINT ["/var/www/html/docker-entrypoint-mw.sh"]
+CMD ["apache2-foreground"]
