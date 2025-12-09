@@ -9,12 +9,18 @@ ENV PHP_INI_UPLOAD_MAX_FILESIZE=100M
 ENV PHP_EXTENSIONS="pdo_mysql gd intl mbstring bcmath zip curl dom opcache exif fileinfo soap"
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-COPY . /var/www/html
+USER root
+
+COPY --chown=docker:docker . /var/www/html
 
 WORKDIR /var/www/html
 
-RUN mkdir -p userfiles/modules userfiles/templates && chmod -R 777 userfiles
+RUN mkdir -p userfiles/modules userfiles/templates storage/framework/cache storage/framework/sessions storage/framework/views storage/logs config \
+    && chown -R docker:docker userfiles storage config \
+    && chmod -R 775 userfiles storage config
 
-RUN composer install --no-interaction --prefer-dist
+USER docker
 
-RUN chown -R www-data:www-data /var/www/html
+RUN composer install --no-interaction --prefer-dist --no-scripts
+
+RUN composer dump-autoload
