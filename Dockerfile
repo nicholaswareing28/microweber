@@ -17,6 +17,8 @@ RUN apt update && apt install -y --no-install-recommends \
         libjpeg62-turbo-dev \
         libwebp-dev \
         libicu-dev \
+        libsqlite3-dev \
+        libbz2-dev \
         libpng-dev && \
     rm -rf /var/lib/apt/lists/*
 
@@ -31,7 +33,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-webp --with-jpeg && \
         echo 'expose_php = Off'; \
     } > /usr/local/etc/php/conf.d/microweber-custom.ini
 
-RUN docker-php-ext-install pdo_mysql pdo_sqlite zip dom curl mbstring intl bcmath sodium opcache soap exif fileinfo sockets xml xmlrpc bz2
+RUN docker-php-ext-install pdo_mysql pdo_sqlite zip dom curl mbstring intl bcmath sodium opcache soap exif fileinfo sockets xml bz2
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
